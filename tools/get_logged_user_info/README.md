@@ -1,14 +1,14 @@
-## Cordys 获取登录用户信息
+# Cordys 获取登录用户信息
 
-### 一、应用描述
+## 一、应用描述
 
 这是一个用于获取 Cordys 登录用户信息的 MaxKB 智能体应用，可以确认登录用户的角色权限，便于后续涉及角色权限的各种操作。
 
-### 二、应用功能
+## 二、应用功能
 
 该应用的功能是获取当前登录用户的详细信息，包括用户名、地区、手机号、邮箱、用户角色。
 
-### 三、应用构建要素
+## 三、应用构建要素
 
 Cordys 获取登录用户信息应用构建时涉及的核心要素内容：
 - 工具：Cordys CRM MCP: https://cordys.cn/docs/mcp_server/#41-maxkb
@@ -91,5 +91,5 @@ def simple_get(url, auth_key):
 - 工作流：部分截图
 ![工作流截图](https://i-blog.csdnimg.cn/direct/da817cfc07e9463396d1032654fbcb0c.png)
 
-### 四、应用效果
+## 四、应用效果
 ![应用效果](https://i-blog.csdnimg.cn/direct/051d38601ffc47248ddf3c221b233ad4.gif)

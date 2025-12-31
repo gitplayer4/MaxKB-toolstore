@@ -1,34 +1,96 @@
 ## Cordys 获取登录用户信息
 
-### 一、项目介绍
+### 一、应用描述
 
-## 1.1 应用描述
+这是一个用于获取登录用户信息的MaxKB智能体应用。
 
-该应用用于检查 Cordys CRM 系统中是否存在重复数据，帮助用户更好地使用 Cordys CRM 系统及其智能体。
+### 二、应用功能
 
-## 1.2 使用场景
+该应用的功能是获取当前登录用户的详细信息，包括用户名、用户ID、用户角色、用户部门等。
 
-适用于 Cordys CRM 系统用户，需要检查线索、商机、联系人和客户是否存在重复数据的情况。
+### 三、应用构建要素
 
-## 二、功能介绍
+Cordys获取登录用户信息应用构建时涉及的核心要素内容：
+- 大模型：deepseek-chat
+- 工具：Cordys CRM MCP: https://cordys.cn/docs/mcp_server/#41-maxkb
+- 获取登陆用户信息工具：工具内容示例：
 
-检查重复数据：用户可以输入要检查的线索名/商机名/联系人/客户名，应用将返回是否存在重复数据的结果。
+```python
+import requests
+import json
 
-## 三、使用方法
 
-1. 输入要检查的线索名/商机名/联系人/客户名。
-2. 输入后，应用将返回是否存在重复数据的结果。
+def get_user_region_info(user_data):
+    """
+    获取用户区域信息
 
-## 四、注意事项
+    Args:
+        user_data: 用户数据字典
 
-1. 请确保输入的信息准确无误。
-2. 该应用仅用于检查重复数据，不提供修改或删除数据的功能。
+    Returns:
+        dict: 包含用户信息的JSON
+    """
+    # 定义区域部门映射
+    regions_mapping = {
+        "华南区": {
+            "销售五部", "销售六部"
+        },
+        "华东区": {
+            "销售一部", "销售二部"
+        },
+        "华北区": {
+            "销售三部", "销售四部"
+        },
+        "华中区": {
+            "销售七部", "销售八部"
+        }
+    }
 
-## 五、应用构建要素
+    data = user_data.get('data', {})
+    department_name = data.get('departmentName', '')
 
-1. 模型：deepseek-chat
-2. 工具：Cordys CRM MCP: https://cordys.cn/docs/mcp_server/#41-maxkb
-3. 工作流：[工作流截图](https://i-blog.csdnimg.cn/direct/e3b3492e4c0d47d790b0ccee3bee2b9d.png)
+    # 确定区域
+    region = "未知"
+    for reg, departments in regions_mapping.items():
+        if department_name in departments:
+            region = reg
+            break
 
-## 六、应用效果
-![应用效果](https://i-blog.csdnimg.cn/direct/676ca8fb32494eefb5dae525397247b9.gif)
+    # 构建返回结果
+    result = {
+        "userName": data.get('userName', ''),
+        "region": region,
+        "phone": data.get('phone', ''),
+        "email": data.get('email', ''),
+        "position": data.get('position', '')
+    }
+
+    return result
+
+def simple_get(url, auth_key):
+    """
+    简化的GET请求函数
+    """
+    token_value = ""
+    if len(auth_key) > 0:
+        token_value = str(auth_key[0]).strip('"')
+    headers = {"authorization": token_value}
+    
+    try:
+        response = requests.get(
+            url=url,
+            headers=headers,
+            timeout=10
+        )
+        response.raise_for_status()
+        return get_user_region_info(response.json())
+    except Exception as e:
+        print(f"请求失败: {e}")
+        return None
+```
+
+- 工作流：部分截图
+![工作流截图](https://i-blog.csdnimg.cn/direct/da817cfc07e9463396d1032654fbcb0c.png)
+
+### 四、应用效果
+![应用效果](https://i-blog.csdnimg.cn/direct/051d38601ffc47248ddf3c221b233ad4.gif)

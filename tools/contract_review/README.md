@@ -46,6 +46,7 @@
 - 按照回答要求的格式进行输出。
 
 - 工作流：部分截图
+
 ![工作流截图](https://i-blog.csdnimg.cn/direct/3ae2911ac1644db5a00e0246be419f79.png)
 
 ## 四、应用效果
